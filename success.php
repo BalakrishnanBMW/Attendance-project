@@ -26,7 +26,6 @@ if(isset($_POST['submit']))
 }
 
 ?>
-<br/>
 
 <div class="card" style="width: 18rem;">
   <div class="card-body">
@@ -39,7 +38,4 @@ if(isset($_POST['submit']))
   </div>
 </div>
 
-<br/>
-<br/>
-<br/>
 <?php require 'includes/footer.php' ?>

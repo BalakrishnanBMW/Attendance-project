@@ -1,3 +1,6 @@
+<br/>
+<br/>
+<br/>
 <div class="text-center">
 	<?php
 	
