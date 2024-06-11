@@ -11,10 +11,10 @@ class crud
 		$this->db = $conn;
 	}
 
-	public function insert($fname, $lname, $dob, $email, $contact, $speciality)
+	public function insert($fname, $lname, $dob, $email, $contact, $speciality, $avatar_path)
 	{
 		try{
-			$query = "INSERT INTO attendee (firstname, lastname, dob, email, contact, specialid) VALUES (:fname, :lname,:dob,:email,:contact,:speciality)";
+			$query = "INSERT INTO attendee (firstname, lastname, dob, email, contact, specialid, avatar_path) VALUES (:fname, :lname,:dob,:email,:contact,:speciality,:avatar_path)";
 			$stmt = $this->db->prepare($query);
 
 			$stmt->bindparam(':fname',$fname);
@@ -23,6 +23,7 @@ class crud
 			$stmt->bindparam(':email',$email);
 			$stmt->bindparam(':contact',$contact);
 			$stmt->bindparam(':speciality',$speciality);
+			$stmt->bindparam(':avatar_path',$avatar_path);
 			
 			$stmt->execute();
 			return true;
@@ -75,10 +76,10 @@ class crud
 		}
 	}
 
-	public function updateRecord($attendee_id, $fname, $lname, $dob, $email, $contact, $speciality)
+	public function updateRecord($attendee_id, $fname, $lname, $dob, $email, $contact, $speciality ,$avatar_path)
 	{
 		try{
-			$query = "UPDATE attendee SET firstname=:fname, lastname=:lname, dob=:dob, email=:email, contact=:contact, specialid=:speciality WHERE attendee_id=:attendee_id";
+			$query = "UPDATE attendee SET firstname=:fname, lastname=:lname, dob=:dob, email=:email, contact=:contact, specialid=:speciality, avatar_path=:avatar_path WHERE attendee_id=:attendee_id";
 			$stmt = $this->db->prepare($query);
 			$stmt->bindparam(':attendee_id',$attendee_id);
 			$stmt->bindparam(':fname',$fname);
@@ -87,6 +88,7 @@ class crud
 			$stmt->bindparam(':email',$email);
 			$stmt->bindparam(':contact',$contact);
 			$stmt->bindparam(':speciality',$speciality);
+			$stmt->bindparam(':avatar_path',$avatar_path);
 			
 			$stmt->execute();
 			return true;
@@ -100,6 +102,15 @@ class crud
 	public function delete($id)
 	{
 	   try{
+		$avatar = "SELECT * FROM `attendee` WHERE attendee_id=:id";
+		$del_pic = $this->db->prepare($avatar);
+		$del_pic->bindparam(':id', $id);
+		$del_pic->execute();
+		$result = $del_pic->fetch();
+		$pic_path = $result['avatar_path'];
+		if(file_exists($pic_path)) {
+			unlink($pic_path);
+		}
 		$query = "DELETE FROM `attendee` WHERE attendee_id=:id";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindparam(':id', $id);

@@ -1,5 +1,6 @@
 <?php 
 require 'db/conn.php';
+$title = "Delete record";
 include 'includes/header.php';
 require_once 'includes/auth_check.php';
 
@@ -11,6 +12,7 @@ if(!isset($_GET['id'])){
 else
 {
 	$id = $_GET['id'];
+	
 	$res = $crud->delete($id);
 	if($res)
 	{

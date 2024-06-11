@@ -9,7 +9,7 @@ $result = $crud->getSpeciality();
 <br/>
 <h1 class="text-center">Registration for Conference</h1>
 
-<form method="POST" action="success.php">
+<form method="POST" action="success.php" enctype="multipart/form-data">
 
   <div class="mb-3">
     <label for="firstname" class="form-label">First Name</label>
@@ -41,6 +41,11 @@ $result = $crud->getSpeciality();
     <label for="phone" class="form-label">Contact Number</label>
     <input required type="text" class="form-control" id="phone" aria-describedby="phoneHelp" name="phone">
     <div id="phoneHelp" class="form-text">We'll never share your phone with anyone else.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="avatar" class="form-label">Upload Profile Picture </label>
+    <input class="form-control" name="avatar" accept="image/png, image/jpeg" type="file" id="avatar">
   </div>
 
   <button type="submit" name="submit" class="btn btn-primary">Submit</button>

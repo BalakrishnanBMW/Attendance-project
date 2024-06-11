@@ -20,9 +20,18 @@ else
 <br/>
 <h1 class="text-center">Edit Record</h1>
 
-<form method="POST" action="editpost.php">
+<form method="POST" action="editpost.php" enctype="multipart/form-data">
 
   <input type='hidden' name='attendee_id' value="<?php echo $attendee['attendee_id'] ?>" />
+
+  <div class="mb-3">
+    <label for="avatar" class="form-label">Re-upload Profile Picture </label>
+    <input class="form-control" name="avatar" accept="image/png, image/jpeg" type="file" id="avatar"> <br/>
+	<?php if(file_exists($attendee['avatar_path'])) { ?>
+    <img src="<?php echo $attendee['avatar_path'] ?>" alt="Profile Picture" width="250px">
+	<?php } ?>
+  </div>
+
   <div class="mb-3">
     <label for="firstname" class="form-label">First Name</label>
     <input required type="text" class="form-control" value="<?php echo $attendee['firstname'] ?>" id="firstname" name="firstname">

@@ -14,7 +14,14 @@ if(isset($_POST['submit']))
 	$contact = $_POST['phone'];
 	$speciality = $_POST['expert'];
 
-	$isSuccess = $crud->updateRecord($attendee_id, $fname, $lname, $dob, $email, $contact, $speciality);
+	$date = new DateTime();
+	$dt = $date->format('YmdHisu');
+	$org_file = $_FILES['avatar']['tmp_name'];
+	$target_dir = "uploads/";
+	$dest = $target_dir . $contact . $dt . basename($_FILES['avatar']['name']);
+	move_uploaded_file($org_file, $dest);
+
+	$isSuccess = $crud->updateRecord($attendee_id, $fname, $lname, $dob, $email, $contact, $speciality, $dest);
 
 	if($isSuccess)
 	{
