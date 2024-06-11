@@ -1,6 +1,7 @@
 <?php 
 require 'db/conn.php';
 include 'includes/header.php';
+require_once 'includes/auth_check.php';
 
 if(!isset($_GET['id'])){
 	include 'includes/errormessage.php';

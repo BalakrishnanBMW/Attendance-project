@@ -1,6 +1,7 @@
 <?php 
 $title = "Updated Successfully";
 require 'includes/header.php';
+require_once 'includes/auth_check.php';
 require 'db/conn.php';
 
 if(isset($_POST['submit']))
