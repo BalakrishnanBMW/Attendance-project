@@ -99,18 +99,30 @@ class crud
 		}
 	}
 
+	
+	public function deleteProfile($id)
+	{
+		try {
+			$avatar = "SELECT * FROM `attendee` WHERE attendee_id=:id";
+			$del_pic = $this->db->prepare($avatar);
+			$del_pic->bindparam(':id', $id);
+			$del_pic->execute();
+			$result = $del_pic->fetch();
+			$pic_path = $result['avatar_path'];
+			if(file_exists($pic_path)) {
+				unlink($pic_path);
+			}
+			return true;
+		} catch (PDOException $ex) {
+			echo $ex->getMessage();
+			return false;
+		}
+	}
+
 	public function delete($id)
 	{
 	   try{
-		$avatar = "SELECT * FROM `attendee` WHERE attendee_id=:id";
-		$del_pic = $this->db->prepare($avatar);
-		$del_pic->bindparam(':id', $id);
-		$del_pic->execute();
-		$result = $del_pic->fetch();
-		$pic_path = $result['avatar_path'];
-		if(file_exists($pic_path)) {
-			unlink($pic_path);
-		}
+		$this->deleteProfile($id);
 		$query = "DELETE FROM `attendee` WHERE attendee_id=:id";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindparam(':id', $id);

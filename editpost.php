@@ -14,12 +14,26 @@ if(isset($_POST['submit']))
 	$contact = $_POST['phone'];
 	$speciality = $_POST['expert'];
 
-	$date = new DateTime();
-	$dt = $date->format('YmdHisu');
-	$org_file = $_FILES['avatar']['tmp_name'];
-	$target_dir = "uploads/";
-	$dest = $target_dir . $contact . $dt . basename($_FILES['avatar']['name']);
-	move_uploaded_file($org_file, $dest);
+	$query = "SELECT avatar_path FROM attendee WHERE attendee_id=:id";
+	$stmt = $pdo->prepare($query);
+	$stmt->bindparam(':id',$attendee_id);
+	$stmt->execute();
+	$fetch = $stmt->fetch();
+	$old_path = $fetch['avatar_path'];
+
+	if(isset($_FILES['avatar']) && $_FILES['avatar']['error'] == UPLOAD_ERR_OK) {
+		$crud->deleteProfile($attendee_id);
+		$date = new DateTime();
+		$dt = $date->format('YmdHisu');
+		$org_file = $_FILES['avatar']['tmp_name'];
+		$target_dir = "uploads/";
+		$dest = $target_dir . $contact . $dt . basename($_FILES['avatar']['name']);
+		move_uploaded_file($org_file, $dest);
+	}
+	else {
+		$dest = $old_path;
+	}
+
 
 	$isSuccess = $crud->updateRecord($attendee_id, $fname, $lname, $dob, $email, $contact, $speciality, $dest);
 
@@ -31,17 +45,14 @@ if(isset($_POST['submit']))
 	{
 		include 'includes/errormessage.php';
 	}
-
 }
 
 ?>
 <br/>
 
-/* // redirecting page
 <?php
-	header('Location:view.php?id='.$_POST["attendee_id"])
+	header('Location:view.php?id='.$_POST["attendee_id"]);
 ?>
-*?
 
 <div class="card" style="width: 18rem;">
   <div class="card-body">
@@ -50,7 +61,6 @@ if(isset($_POST['submit']))
     <p class="card-text">Date of Birth : <?php echo $_POST['dob']; ?></p>
     <p class="card-text">mail : <?php echo $_POST['email']; ?></p>
     <p class="card-text">Contact : <?php echo $_POST['phone']; ?></p>
-
   </div>
 </div>
 
