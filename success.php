@@ -39,7 +39,10 @@ if(isset($_POST['submit']))
 ?>
 
 <div class="card" style="width: 18rem;">
+   
+	<?php if(isset($_FILES['avatar']) && $_FILES['avatar']['error'] == UPLOAD_ERR_OK) { ?>
   <img class="card-img-top" src="<?php echo $dest ?>" alt="Profile Picture">
+	<?php } ?>
   <div class="card-body">
     <h5 class="card-title"><?php echo $_POST['firstname'] .' '. $_POST['lastname']; ?></h5>
     <h6 class="card-subtitle mb-2 text-muted"><?php echo $_POST['expert']; ?></h6>
